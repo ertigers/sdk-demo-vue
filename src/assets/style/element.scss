@@ -1,0 +1,59 @@
+// 重写element-ui样式文件
+.el-container,
+.el-header,
+.el-main,
+.el-aside {
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.el-container,
+.el-main {
+  height: 100%;
+}
+
+.el-container {
+  // background-color: #06242F;
+}
+
+
+// .el-form-item__label{
+//   color: #fff;
+// }
+// .el-input__inner {
+//   font-size: 20px ;
+//   color: #0e318e ;
+//   font-weight: 400 ;
+// }
+.el-tabs__item {
+  min-width: 0;
+}
+
+.el-input__inner {
+  background-color: transparent;
+}
+
+.custom-tree-node {
+  -ms-flex: 1;
+  flex: 1;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: justify;
+  justify-content: flex-start;
+  font-size: 14px;
+  padding-right: 8px;
+  position: relative;
+  width: 100%;
+  color: #fff;
+
+  .right {
+    position: absolute;
+    left: 0;
+  }
+}
+.el-tree-node .is-current{
+  background-color: #9999996e;
+}

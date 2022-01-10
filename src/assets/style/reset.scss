@@ -1,0 +1,169 @@
+/* Reset */
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+  user-select: none;
+}
+
+body,
+ol,
+ul,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+th,
+td,
+dl,
+dd,
+form,
+fieldset,
+legend,
+input,
+textarea,
+select {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background: none;
+}
+
+body {
+  // font: 1rem/1 helvetica, "PingFang SC", "Hiragino Sans GB", "STHeiti Light", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  font: 1rem/1 'Arial Normal', 'Arial', sans-serif;
+  color: #fff;
+  height: 100%;
+  width: 100%;
+  // background-color: rgb(10, 17, 31);
+  -webkit-text-size-adjust: 100%;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    height: 100%;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    opacity: 1;
+  }
+}
+
+input,
+textarea,
+button {
+  outline: none;
+  -webkit-appearance: none;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+em {
+  font-style: normal;
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  border: 0;
+  vertical-align: middle;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+p {
+  word-wrap: break-word;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+
+.interval {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1366px) {
+  .interval {
+    display: inline-block;
+    width: 5px;
+    height: 10px;
+  }
+}
+
+.el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+
+.el-scrollbar__bar {
+  right: 8px;
+}
+
+.el-select-dropdown__wrap.el-scrollbar__wrap,
+.el-autocomplete-suggestion__wrap.el-scrollbar__wrap {
+  overflow: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  padding: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-clip: padding-box;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 4px solid transparent;
+  transition: 0.3s;
+}
+
+:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+html,
+body,
+#app,
+#app>div {
+  height: 100%;
+  overflow: hidden;
+}

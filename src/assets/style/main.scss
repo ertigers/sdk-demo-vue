@@ -1,0 +1,514 @@
+.video-container {
+  background-color: #0E181A;
+
+  .el-aside {
+    // background-color: grey;
+    width: 470px !important;
+    padding: 0 20px;
+
+    .el-tabs {
+      .el-tabs__header {
+        margin-top: 20px;
+        padding-bottom: 15px;
+        background-image: url("../icons/tab_header_line.svg");
+        background-repeat: no-repeat;
+        background-position: left bottom;
+      }
+
+      .el-tabs__nav-wrap {
+        .el-tabs__active-bar {
+          display: none;
+        }
+
+        &::after {
+          display: none;
+        }
+      }
+
+      .el-tabs__nav {
+        .el-tabs__item {
+          height: 26px;
+          line-height: 26px;
+          padding-left: 20px;
+          padding-right: 20px;
+          background-color: rgba(0, 163, 255, 0.2);
+          border-radius: 4px;
+          color: #fff;
+          font-size: 12px;
+          margin-right: 10px;
+
+          &.is-active {
+            background-color: rgba(0, 163, 255, 1)
+          }
+        }
+      }
+
+      .el-tabs__content {
+        background-color: rgba(0, 158, 255, 0.0823529);
+
+        .el-tab-pane {
+          height: 100%;
+        }
+
+
+      }
+    }
+
+    .ptz-container {
+      .el-tabs__content {
+        min-height: 164px;
+      }
+
+      .ptz-control {
+        display: flex;
+        width: 427px;
+        height: 164px;
+        background-color: rgba(0, 158, 255, 0.0823529411764706);
+        margin: 0 auto;
+        align-items: center;
+
+        .ptz {
+          position: relative;
+          width: 120px;
+          height: 120px;
+          background-image: url("../icons/ptz_bg.svg");
+          background-position: center;
+          background-size: 100%;
+          margin: 0 10px;
+
+          .up,
+          .right,
+          .down,
+          .left {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-image: url("../icons/ptz_arrow.svg");
+            background-repeat: no-repeat;
+
+            &:hover {
+              cursor: pointer;
+            }
+
+            &.disabled {
+              cursor: not-allowed;
+            }
+          }
+
+          .center:hover {
+            cursor: pointer;
+          }
+
+          .up,
+          .down {
+            left: 50%;
+          }
+
+          .up {
+            top: 4px;
+            background-size: 100%;
+            transform: translateX(-50%);
+          }
+
+          .down {
+            bottom: 4px;
+            transform: translateX(-50%) rotate(180deg);
+          }
+
+          .left {
+            left: 4px;
+            top: 50%;
+            transform: rotate(270deg) translateX(50%);
+          }
+
+          .right {
+            right: 4px;
+            top: 50%;
+            transform: rotate(90deg) translateX(-50%);
+          }
+
+          .center {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            // background-image: url("../icons/ptz_lock.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #00A2FE;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            text-align: center;
+            line-height: 70px;
+          }
+        }
+
+        .camera-control {
+          width: calc(100% - 140px);
+          padding-right: 12px;
+
+          .camera {
+            display: flex;
+            justify-content: space-around;
+
+            .unit {
+              text-align: center;
+
+              .btns {
+                display: flex;
+                flex-direction: column;
+
+                i {
+                  width: 50px;
+                  height: 25px;
+                  background-color: #fff;
+                  text-align: center;
+                  line-height: 25px;
+                  color: #00A2FE;
+
+                  &:first-child {
+                    border-radius: 25px 25px 0 0;
+                    border-bottom: solid 1px #ccc;
+                  }
+
+                  &:last-child {
+                    border-radius: 0 0 25px 25px;
+                  }
+
+                  &:hover:not(.disabled) {
+                    cursor: pointer;
+                    background-color: #00A2FE;
+                    color: #fff;
+                  }
+
+                  &.disabled {
+                    cursor: not-allowed;
+                  }
+                }
+              }
+
+              span {
+                display: block;
+                font-size: 12px;
+                margin-top: 5px;
+              }
+            }
+
+          }
+
+          .speed {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+
+            >span {
+              font-size: 12px;
+            }
+
+            >i {
+              font-size: 15px;
+              font-weight: bold;
+
+              &:hover {
+                cursor: pointer;
+              }
+            }
+
+            .el-slider {
+              width: 200px;
+
+              .el-slider__button-wrapper {
+                display: none;
+              }
+
+              .el-slider__runway {
+                height: 8px;
+                border-radius: 4px;
+                margin: 14px 0;
+                background-color: rgba(255, 255, 255, 0.25);
+
+                .el-slider__bar {
+                  height: 8px;
+                  border-radius: 4px;
+                  background-color: rgba(0, 162, 254, 1);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 设备控制
+    .device-control {
+      .el-tabs__content {
+        height: 180px;
+      }
+
+      // 预置位
+      .yzw {
+        height: calc(100% - 32px);
+        padding-top: 5px;
+
+        ul {
+          height: 100%;
+          overflow-y: scroll;
+
+          li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            line-height: 2;
+            padding-left: 20px;
+
+            span {
+              .set {}
+            }
+
+            .tools {
+              i {
+                margin: 0 2px;
+
+                &:hover {
+                  cursor: pointer;
+                  color: #00A2FE;
+                }
+              }
+            }
+
+            &.active {
+              background: rgba(145, 145, 145, 0.4);
+            }
+          }
+        }
+
+        .control {
+          height: 32px;
+          background-color: rgba(0, 158, 255, 0.12);
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+
+          i {
+            width: 20px;
+            height: 20px;
+            background-size: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-right: 15px;
+
+            &:hover {
+              cursor: pointer;
+            }
+
+            $control-list: refresh,
+            down,
+            up,
+            set;
+
+            @for $i from 1 through length($control-list) {
+              $name: nth($control-list, $i);
+
+              &.#{$name} {
+                background-image: url("~@/assets/icons/yzw_#{$name}.svg");
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 设备列表
+    .device-wrap {
+      height: calc(100% - 520px);
+
+      .el-tabs__content {
+        height: calc(100% - 60px);
+      }
+
+      .device {
+        height: 100%;
+
+        .el-input {
+          .el-input__inner {
+            height: 32px;
+            line-height: 32px;
+            font-size: 14px;
+            color: #fff;
+          }
+
+          .el-input__icon {
+            line-height: 32px;
+          }
+        }
+
+        .el-scrollbar {
+          height: calc(100% - 32px);
+        }
+
+        .el-tree {
+          margin-top: 10px;
+          background-color: transparent;
+          margin-top: 10px;
+
+          .el-tree-node__content:hover {
+            background-color: transparent;
+          }
+
+          .el-tree-node:focus>.el-tree-node__content {
+            background-color: transparent;
+          }
+
+          .el-tree-node.is-current>.el-tree-node__content {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+  }
+
+  // 视频窗口
+  .el-main {
+    .video-layout {
+      height: 100%;
+
+      .el-row {
+        height: 100%;
+      }
+
+      .videobox {
+        // width: 50%;
+        position: relative;
+        height: 50%;
+        border: solid 1px #333;
+
+        &.active {
+          border: solid 1px #fff;
+        }
+
+        video {
+          width: 100%;
+          height: 100%;
+        }
+
+        >div {
+          height: 100%;
+        }
+
+        .close {
+          display: none;
+          position: absolute;
+          right: 5px;
+          top: 5px;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+
+        &.playing:hover,
+        &.playing.active {
+          i.close {
+            display: block;
+          }
+        }
+
+        .tools {
+          position: absolute;
+          width: 100%;
+          bottom: 0;
+          height: 20px;
+          background-color: rgba(0, 0, 0, 0.5);
+          font-size: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 5px;
+
+          >span {
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .controls {
+            display: flex;
+
+            >div {
+              width: 20px;
+              height: 20px;
+              background-size: 100%;
+              background-position: center;
+              margin: 0 1px;
+
+              &:hover {
+                cursor: pointer;
+              }
+            }
+
+            $tools-list: d3d,
+            audio,
+            bdlp,
+            bdlx,
+            bdzp,
+            qdlx,
+            qdzp,
+            talk,
+            ydlx,
+            ydzp,
+            ylp;
+
+            @for $i from 1 through length($tools-list) {
+              $name: nth($tools-list, $i);
+
+              .#{$name} {
+                background-image: url("~@/assets/icons/video-tools-#{$name}.png");
+
+                &.active {
+                  background-image: url("~@/assets/icons/video-tools-#{$name}-active.png");
+                }
+              }
+            }
+
+            .call {
+              line-height: 20px;
+              font-size: 16px;
+              text-align: center;
+
+              &.active {
+                color: #01FF0F;
+              }
+            }
+          }
+        }
+      }
+
+    }
+
+    .contextmenu {
+      position: absolute;
+      left: -100%;
+      top: -100%;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 6px 0;
+
+      .el-button {
+        padding: 6px 6px;
+
+        &:hover {
+          background-color: rgba(0, 158, 255, 0.0823529);
+        }
+      }
+
+      .el-button+.el-button {
+        margin-left: 0;
+      }
+    }
+  }
+}
