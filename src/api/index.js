@@ -1,7 +1,7 @@
 // 统一添加token
 // import webcu2plugin from "webcu2plugin"
-// import webcu2plugin from "../utils/lib/webcu2plugin.js"
-import webcu2plugin from "../utils/webcu2plugin.js"
+import webcu2plugin from "../utils/lib/webcu2plugin.js"
+// import webcu2plugin from "../utils/webcu2plugin.js"
 import store from "../store";
 
 console.log(webcu2plugin);

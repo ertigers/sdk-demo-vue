@@ -7,9 +7,12 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "0.0.7",
     "axois": "0.0.1-security",
     "element-ui": "^2.15.6",
     "flv.js": "^1.6.2",
+    "lodash": "^4.17.20",
+    "moment": "^2.29.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0",

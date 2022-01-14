@@ -37,7 +37,6 @@ export default {
     return {
       form: {
         address: "47.96.224.81",
-        // address: "172.25.8.27",
         port: 9988,
         user: "admin",
         password: "",
@@ -56,17 +55,6 @@ export default {
   methods: {
     login() {
       let self = this;
-
-      //   let params = {
-      //     address: "47.96.224.81",
-      //     // address: "172.25.8.27",
-      //     port: 9988,
-      //     user: "admin",
-      //     password: "",
-      //     epid: "system",
-      //     fixaddr: 0,
-      //   };
-
       this.$api("login", self.form)
         .then((rv) => {
           if (rv.msg == "OK") {
