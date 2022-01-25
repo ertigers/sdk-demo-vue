@@ -9,5 +9,6 @@ console.log(webcu2plugin);
 export const api = (name, params, callback) => {
     let token = store.state.token;
     Object.assign(params, { token }) // 添加token
+    console.log(params);
     return webcu2plugin[name](params,callback)
 }

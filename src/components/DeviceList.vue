@@ -282,4 +282,43 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+/deep/ {
+  .el-input {
+    .el-input__inner {
+      height: 32px;
+      line-height: 32px;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .el-input__icon {
+      line-height: 32px;
+    }
+  }
+
+  .el-scrollbar {
+    height: 100%;
+  }
+
+  .el-tree {
+    margin-top: 10px;
+    background-color: transparent;
+    margin-top: 10px;
+
+    .el-tree-node__content:hover {
+      background-color: transparent;
+    }
+
+    .el-tree-node:focus > .el-tree-node__content {
+      background-color: transparent;
+    }
+
+    .el-tree-node.is-current > .el-tree-node__content {
+      background-color: transparent;
+    }
+  }
+}
+.device {
+  height: 100%;
+}
 </style>

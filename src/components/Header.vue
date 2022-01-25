@@ -5,15 +5,115 @@
         <router-link to="/real" active-class="selected">实时视频</router-link>
         <router-link to="/history" active-class="selected">历史视频</router-link>
         <router-link to="/elemap" active-class="selected">电子地图</router-link>
-        <!-- <router-link to="/login" active-class="selected">登录</router-link> -->
       </div>
+      <div class="btn-login" @click="dialogVisible=true">登录设置</div>
     </header>
+    <el-dialog :visible.sync="dialogVisible" title="登录设置" :modal-append-to-body="false">
+      <el-form label-width="80px" :model="form">
+        <el-form-item label="地址">
+          <el-input v-model="form.address"></el-input>
+        </el-form-item>
+        <el-form-item label="端口">
+          <el-input v-model="form.port"></el-input>
+        </el-form-item>
+        <el-form-item label="用户">
+          <el-input v-model="form.user"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="form.password"></el-input>
+        </el-form-item>
+        <el-form-item label="epid">
+          <el-input v-model="form.epid"></el-input>
+        </el-form-item>
+        <el-form-item label="透过网闸">
+          <el-input v-model="form.fixaddr" placeholder="1:透过网闸，0:不透过"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="setLoginData">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script >
+import { setStorage, getStorage } from "../utils/helper"
+import axios from 'axios'
 export default {
   name: "Header",
+  data() {
+    return {
+      form: {
+        address: "172.25.18.21",
+        port: 9988,
+        user: "admin",
+        password: "",
+        epid: "system",
+        fixaddr: 0,
+      },
+      dialogVisible: false,
+    };
+  },
+  mounted() {
+    // this.loginDataInit()
+    this.autoLogin()
+    // this.login()
+  },
+  methods: {
+    // login() {
+    //   axios.post('/icvs2/login', {
+    //     address: "172.25.18.21",
+    //     port: 9988,
+    //     user: "admin",
+    //     password: "",
+    //     epid: "system",
+    //     fixaddr: 0,
+    //   })
+    //   .then(function (response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+    // },
+    // 登录数据初始化
+    loginDataInit() {
+      let loginData = getStorage('loginData')
+      if(loginData) {
+        this.form = loginData
+      }
+    },
+    // 自动登录
+    autoLogin() {
+      let params = JSON.parse(JSON.stringify(this.form))
+      this.$api("login", params, this.eventCallback).then((rv) => {
+        console.log(rv);
+        if (rv.msg == "OK") {
+          let token = rv.token;
+          this.token = token;
+          this.$store.commit("setToken", token); // token存储到vuex中
+          this.$store.dispatch("device/startFetchDevice");
+        } else {
+          this.$message.warning(rv.msg);
+        }
+      });
+    },
+    // ws回调函数
+    eventCallback(params) {
+      console.log(params);
+      if (params.type === "playEvent") {
+        // 播放视频的状态
+        let { status, playID, statusText } = params.data;
+        this.$bus.$emit("playEvent", { status, playID, statusText });
+      }
+    },
+    // 设置登录参数
+    setLoginData() {
+      setStorage('loginData',this.form)
+      this.dialogVisible = false
+      this.autoLogin()
+    }
+  }
 };
 </script>
 
@@ -60,6 +160,13 @@ export default {
           transition: all 0.5s ease-in-out;
         }
       }
+    }
+    .btn-login {
+      margin-left: auto;
+      cursor: pointer;
+    }
+    .btn-login:hover {
+      color: #FF981A;
     }
   }
 }

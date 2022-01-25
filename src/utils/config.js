@@ -17,7 +17,7 @@ const cf = {
 		epid : "system",
 		// - 登录平台是否通过网闸模式
 		fixaddr :0
-	}	
+	},
 }
 
 export default cf

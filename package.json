@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "0.0.7",
+    "axios": "^0.25.0",
     "axois": "0.0.1-security",
     "element-ui": "^2.15.6",
     "flv.js": "^1.6.2",

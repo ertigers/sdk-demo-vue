@@ -1,5 +1,5 @@
 import { QxRequest } from '../request.js'
-import { base_url } from '../config'
+import { plugin_url } from '../config'
 
 const videoFront = {
   /**
@@ -9,18 +9,18 @@ const videoFront = {
   */
   // 开始前端抓拍
   startSGSnapshot: (params) => {
-    return QxRequest('get',`${base_url}SG/C_SG_StartSnapshot`, params);
+    return QxRequest('get',`${plugin_url}SG/C_SG_StartSnapshot`, params);
   },
 
   // 开始前端录像
   startSGStorage: (params) => {
     params.IVIdx = params.idx || '0'
-    return QxRequest('get',`${base_url}SG/VODFile.flv`, params);
+    return QxRequest('get',`${plugin_url}SG/VODFile.flv`, params);
   },
 
   // 查询前端文件（录像，抓拍，录音）
   getDeviceFile: (params) => {
-    return QxRequest('get',`${base_url}SG/C_SG_QueryRecordFiles`, params);
+    return QxRequest('get',`${plugin_url}SG/C_SG_QueryRecordFiles`, params);
   },
 
 

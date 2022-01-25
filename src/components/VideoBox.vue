@@ -716,4 +716,100 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.videobox {
+  position: relative;
+  height: 50%;
+  border: solid 1px #333;
+
+  &.active {
+    border: solid 1px #fff;
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+  }
+
+  > div {
+    height: 100%;
+  }
+
+  .close {
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &.playing:hover,
+  &.playing.active {
+    i.close {
+      display: block;
+    }
+  }
+
+  .tools {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+
+    > span {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .controls {
+      display: flex;
+
+      > div {
+        width: 20px;
+        height: 20px;
+        background-size: 100%;
+        background-position: center;
+        margin: 0 1px;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      $tools-list: d3d, audio, bdlp, bdlx, bdzp, qdlx, qdzp, talk, ydlx,
+        ydzp, ylp;
+
+      @for $i from 1 through length($tools-list) {
+        $name: nth($tools-list, $i);
+
+        .#{$name} {
+          background-image: url("~@/assets/icons/video-tools-#{$name}.png");
+
+          &.active {
+            background-image: url("~@/assets/icons/video-tools-#{$name}-active.png");
+          }
+        }
+      }
+
+      .call {
+        line-height: 20px;
+        font-size: 16px;
+        text-align: center;
+
+        &.active {
+          color: #01ff0f;
+        }
+      }
+    }
+  }
+}
 </style>
