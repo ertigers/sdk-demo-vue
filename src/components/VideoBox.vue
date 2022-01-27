@@ -259,15 +259,43 @@ export default {
   },
   methods: {
     async startPlayVideo({ puid, idx, stream, camera, device }) {
+      let token = this.$store.state.token;
+      this.statusText = "正在连接";
+      let url = `/icvs2/stream.flv?puid=${puid}&idx=${idx}&stream=${stream}&token=${token}`;   // 服务端的host
       let self = this;
-      let { playID, type } = await self.getPlayId({ puid, idx, stream });
-      // let data = await self.getPlayId({ puid, idx, stream });
-      console.log(playID);
-      if (playID) {
-        self.statusText = "正在连接";
-        let url = "http://172.22.93.1:9585/stream2.flv?playID=" + playID;
-        self.playVideo({ url, playID, camera, device });
-      }
+      console.log(url);
+      self.flvPlayer = flv.createPlayer(
+        {
+          type: "flv",
+          url: url,
+          isLive: true,
+          hasAudio: false,
+        },
+        {
+          enableWorker: false,
+          autoCleanupSourceBuffer: true, //清理缓冲区
+          enableStashBuffer: false,
+          stashInitialSize: 128, // 减少首桢显示等待时长
+          statisticsInfoReportInterval: 600,
+        }
+      );
+      let ele = self.$refs["videobox" + self.windowIndex];
+      console.log(ele);
+      self.flvPlayer.attachMediaElement(ele);
+      self.flvPlayer.load();
+      setTimeout(() => {
+        self.flvPlayer.play();
+        let play = {
+          playWindow: self.windowIndex,
+          puid: camera.puid,
+          idx: camera.Idx,
+          name: camera.Name,
+          camera: camera,
+          device: device,
+        };
+        console.log(play);
+        self.$store.commit("playvideo/addPlayInfo", { play });
+      }, 200);
     },
     // 获取播放ID
     async getPlayId({ puid, idx, stream }) {

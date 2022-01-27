@@ -38,13 +38,12 @@
 
 <script >
 import { setStorage, getStorage } from "../utils/helper"
-import axios from 'axios'
 export default {
   name: "Header",
   data() {
     return {
       form: {
-        address: "172.25.18.21",
+        address: "47.96.224.81",
         port: 9988,
         user: "admin",
         password: "",
@@ -55,27 +54,10 @@ export default {
     };
   },
   mounted() {
-    // this.loginDataInit()
+    this.loginDataInit()
     this.autoLogin()
-    // this.login()
   },
   methods: {
-    // login() {
-    //   axios.post('/icvs2/login', {
-    //     address: "172.25.18.21",
-    //     port: 9988,
-    //     user: "admin",
-    //     password: "",
-    //     epid: "system",
-    //     fixaddr: 0,
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-    // },
     // 登录数据初始化
     loginDataInit() {
       let loginData = getStorage('loginData')

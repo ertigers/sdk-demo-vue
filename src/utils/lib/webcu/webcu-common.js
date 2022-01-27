@@ -237,17 +237,17 @@ const common = {
 
   // 获取设备列表
   getDeviceList: (params) => {
-    return QxRequest("get", `${plugin_url}CAS/C_CAS_QueryPUIDSets`, params);
+    return QxRequest("get", `${server_url}CAS/C_CAS_QueryPUIDSets`, params);
   },
 
   // 获取单个设备列表子资源
   getDeviceByPuid: (params) => {
-    return QxRequest("get", `${plugin_url}C_CAS_QueryPUIDRes`, params);
+    return QxRequest("get", `${server_url}C_CAS_QueryPUIDRes`, params);
   },
 
   // 获取播放ID
   getPlayVideoId: (params) => {
-    return QxRequest("get", `${plugin_url}video/startVideo2`, params);
+    return QxRequest("get", `${server_url}video/startVideo2`, params);
   },
 
   // 开始对讲

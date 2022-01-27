@@ -8,10 +8,8 @@ const plugin_ws_url = `ws://${plugin_host}/`
 
 // 服务端
 const server_host = cf.server_host;
-// const server_url = `http://${server_host}/icvs2/`;
-// const server_ws_url = `ws://${server_host}/`;
+const server_url = `/icvs2/`;           // 根路由
+const server_all_url = `http://${server_host}/icvs2/`;  // 播放flv视频使用
+const server_ws_url = `ws://${server_host}/`;         // 连接ws
 
-const server_url = `/icvs2/`;
-const server_ws_url = `ws://${server_host}/`;
-
-export { plugin_url, plugin_ws_url, server_url, server_ws_url }
+export { plugin_url, plugin_ws_url, server_url, server_all_url, server_ws_url }
