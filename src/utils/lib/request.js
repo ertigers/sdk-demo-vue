@@ -43,6 +43,7 @@ const QxRequest = (method, url, params)=> {
     //post
     if (method === "post" || method === "POST") {
       xhr.open(method, url, true);
+      xhr.setRequestHeader('content-type', 'application/json; charset=UTF-8')
       xhr.setRequestHeader("Accept", "*/*");
       xhr.timeout = 8000; // 超时时间，单位是毫秒
       xhr.send(JSON.stringify(params));

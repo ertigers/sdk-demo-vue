@@ -17,7 +17,10 @@ const cf = {
 		epid : "system",
 		// - 登录平台是否通过网闸模式
 		fixaddr :0
-	}	
+	},
+
+	// 服务端
+	server_host: '172.22.87.1:9581',
 }
 
 export default cf

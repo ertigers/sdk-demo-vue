@@ -1,5 +1,5 @@
 <template>
-  <div class="container video-container">
+  <div class="video-container">
     <aside>
       <el-tabs class="tab-container1">
         <el-tab-pane label="云台控制">
@@ -39,7 +39,7 @@ export default {
   components: { PtzControl, PresetPos, DeviceList, VideoBox },
   data() {
     return {
-      token: "",
+
     };
   },
   computed: {
@@ -50,38 +50,8 @@ export default {
   watch: {},
   created() {},
   mounted() {
-    this.login();
   },
   methods: {
-    login() {
-      let params = {
-        address: "47.96.224.81",
-        port: 9988,
-        user: "admin",
-        password: "",
-        epid: "system",
-        fixaddr: 0,
-      };
-      this.$api("login", params, this.eventCallback).then((rv) => {
-        console.log(rv);
-        if (rv.msg == "OK") {
-          let token = rv.token;
-          this.token = token;
-          this.$store.commit("setToken", token); // token存储到vuex中
-          this.$store.dispatch("device/startFetchDevice");
-        } else {
-          this.$message.warning(rv.msg);
-        }
-      });
-    },
-    eventCallback(params) {
-      console.log(params);
-      if (params.type === "playEvent") {
-        // 播放视频的状态
-        let { status, playID, statusText } = params.data;
-        this.$bus.$emit("playEvent", { status, playID, statusText });
-      }
-    },
     changeCurrentWindow(index) {
       this.$store.commit("playvideo/setCurrentWindow", { index });
     },
@@ -90,16 +60,73 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.container {
+.video-container {
   flex: 1;
   display: flex;
+  background-color: #0e181a;
   aside {
     width: 470px;
-    height: 100%;
     padding: 20px;
+    /deep/ .el-tabs {
+      .el-tabs__nav-wrap {
+        .el-tabs__active-bar {
+          display: none;
+        }
+        &::after {
+          display: none;
+        }
+      }
+      .el-tabs__nav {
+        .el-tabs__item {
+          height: 26px;
+          line-height: 26px;
+          padding-left: 20px;
+          padding-right: 20px;
+          background-color: rgba(0, 163, 255, 0.2);
+          border-radius: 4px;
+          color: #fff;
+          font-size: 12px;
+          margin-right: 10px;
+
+          &.is-active {
+            background-color: rgba(0, 163, 255, 1);
+          }
+        }
+      }
+      .el-tabs__content {
+        background-color: rgba(0, 158, 255, 0.0823529);
+        .el-tab-pane {
+          height: 100%;
+        }
+      }
+    }
+
+    /* 云台控制，预置位 */
+    .tab-container1 {
+      height: 300px;
+      /deep/ .el-tabs__content {
+        height: 260px;
+      }
+    }
+    // 设备列表
+    .tab-container2 {
+      height: 520px;
+      margin-top: 20px;
+      /deep/ .el-tabs__content {
+        height: calc(100% - 40px);
+      }
+    }
+
   }
   main {
     flex: 1;
+  }
+  // 视频窗口
+  .video-layout {
+    height: 100%;
+    .el-row {
+      height: 100%;
+    }
   }
 }
 </style>

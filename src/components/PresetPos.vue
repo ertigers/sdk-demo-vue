@@ -182,78 +182,71 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-// 设备控制
-.device-control {
-  .el-tabs__content {
-    height: 180px;
-  }
+// 预置位
+.presetpos {
+  height: 164px;
+  padding-top: 5px;
 
-  // 预置位
-  .yzw {
-    height: calc(100% - 32px);
-    padding-top: 5px;
+  ul {
+    height: 100%;
+    overflow-y: scroll;
 
-    ul {
-      height: 100%;
-      overflow-y: scroll;
-
-      li {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 14px;
-        line-height: 2;
-        padding-left: 20px;
-
-        span {
-          .set {
-          }
-        }
-
-        .tools {
-          i {
-            margin: 0 2px;
-
-            &:hover {
-              cursor: pointer;
-              color: #00a2fe;
-            }
-          }
-        }
-
-        &.active {
-          background: rgba(145, 145, 145, 0.4);
-        }
-      }
-    }
-
-    .control {
-      height: 32px;
-      background-color: rgba(0, 158, 255, 0.12);
+    li {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
+      font-size: 14px;
+      line-height: 2;
+      padding-left: 20px;
 
-      i {
-        width: 20px;
-        height: 20px;
-        background-size: 100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        margin-right: 15px;
-
-        &:hover {
-          cursor: pointer;
+      span {
+        .set {
         }
+      }
 
-        $control-list: refresh, down, up, set;
+      .tools {
+        i {
+          margin: 0 2px;
 
-        @for $i from 1 through length($control-list) {
-          $name: nth($control-list, $i);
-
-          &.#{$name} {
-            background-image: url("~@/assets/icons/yzw_#{$name}.svg");
+          &:hover {
+            cursor: pointer;
+            color: #00a2fe;
           }
+        }
+      }
+
+      &.active {
+        background: rgba(145, 145, 145, 0.4);
+      }
+    }
+  }
+
+  .control {
+    height: 32px;
+    background-color: rgba(0, 158, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    i {
+      width: 20px;
+      height: 20px;
+      background-size: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin-right: 15px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      $control-list: refresh, down, up, set;
+
+      @for $i from 1 through length($control-list) {
+        $name: nth($control-list, $i);
+
+        &.#{$name} {
+          background-image: url("~@/assets/icons/yzw_#{$name}.svg");
         }
       }
     }

@@ -86,6 +86,19 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.ptz-container {
+// 云台控制
+.ptz-control {
+  .ptz {
+    h4 {
+      margin-bottom: 10px;
+    }
+    .el-row {
+      display: flex;
+      margin-bottom: 16px;
+      .el-button {
+        width: 100px;
+      }
+    }
+  }
 }
 </style>

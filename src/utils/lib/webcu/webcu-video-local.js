@@ -1,5 +1,5 @@
 import { QxRequest } from '../request.js'
-import { base_url } from '../config'
+import { plugin_url } from '../config'
 
 const videoLocal = {
   /**
@@ -16,11 +16,11 @@ const videoLocal = {
       interval: params.interval || 6,
       token: params.token,
     }
-    return QxRequest('get',`${base_url}localSnapshot`, query);
+    return QxRequest('get',`${plugin_url}localSnapshot`, query);
   },
   // 停止本地连拍
   stopLocalSnapShot:(params) => {
-    return QxRequest('get',`${base_url}cancelLocalSnapshot`, params);
+    return QxRequest('get',`${plugin_url}cancelLocalSnapshot`, params);
   },
   // 本地录像
   startLocalVideo:(params) => {
@@ -30,11 +30,11 @@ const videoLocal = {
       maxFileTime: params.maxFileTime || 300,
       token: params.token,
     }
-    return QxRequest('get',`${base_url}localRecord`, query);
+    return QxRequest('get',`${plugin_url}localRecord`, query);
   },
   // 停止本地录像
   stopLocalVideo:(params) => {
-    return QxRequest('get',`${base_url}cancelLocalRecord`, params);
+    return QxRequest('get',`${plugin_url}cancelLocalRecord`, params);
   },
 }
 

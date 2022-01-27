@@ -1,5 +1,5 @@
 import { QxRequest } from '../request.js'
-import { base_url } from '../config'
+import { plugin_url } from '../config'
 
 const preset = {
   /**
@@ -22,7 +22,7 @@ const preset = {
         <Res Type="PTZ" Idx="${idx}" OptID="F_PTZ_PresetPositionSets" Stream="0"><Param></Param></Res>
       </C>
     </M>`
-    let url = `${base_url}RawRequest?dstType=201&dstID=${puid}&token=${token}`
+    let url = `${plugin_url}RawRequest?dstType=201&dstID=${puid}&token=${token}`
     let params= { xml }
     let data = await QxRequest('post', url , params);
     try {
@@ -36,17 +36,17 @@ const preset = {
 
   // 设置预置位
   setPresetPos: (params) => {
-    return QxRequest('post',`${base_url}PTZ/C_PTZ_SetPresetPos`, params);
+    return QxRequest('post',`${plugin_url}PTZ/C_PTZ_SetPresetPos`, params);
   },
 
   // 前往预置位
   moveToPresetPos: (params) => {
-    return QxRequest('post',`${base_url}PTZ/C_PTZ_MoveToPresetPos`, params);
+    return QxRequest('post',`${plugin_url}PTZ/C_PTZ_MoveToPresetPos`, params);
   },
 
   // 前往原始预置位
   gotoOriginalPresetPos: (params) => {
-    return QxRequest('post',`${base_url}PTZ/C_PTZ_GotoOriginalPresetPos`, params);
+    return QxRequest('post',`${plugin_url}PTZ/C_PTZ_GotoOriginalPresetPos`, params);
   },
  
 }
