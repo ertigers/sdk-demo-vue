@@ -14,6 +14,7 @@ const common = {
       reslut.code = 0;
       reslut.msg = res.msg;
       reslut.token = res.token;
+      console.log('server_ws_url',server_ws_url);
       // 连接ws
       let url = server_ws_url + "?token=" + res.token;
       let ws = new WebSocket(url);
