@@ -39,12 +39,10 @@
 <script>
 import qxIcon from "./qx_icon.vue";
 import { mapGetters } from "vuex";
-import flv from "flv.js";
 export default {
   components: { qxIcon },
   data() {
     return {
-      // deviceTree: [{ label: "111", id: 1 },{ label: "222", id: 2 }],
       activeName: "device",
       deviceTree: [],
       defaultProps: {
@@ -62,7 +60,6 @@ export default {
   computed: {
     ...mapGetters({
       checkPlayState: "playvideo/checkPlayState",
-      // getCurrentEle: "playvideo/getCurrentEle",
       getCurrentWindowState: "playvideo/getCurrentWindowState",
     }),
     deviceList() {
@@ -71,10 +68,6 @@ export default {
     currentWindow() {
       this.$store.state.playvideo.currentWindow;
     },
-    // currentEle() {
-    //   console.log(this.$store.state.playvideo.currentEle);
-    //   this.$store.state.playvideo.currentEle;
-    // },
   },
   beforeCreate() {},
   created() {},
@@ -92,8 +85,7 @@ export default {
     },
     // 查询子资源
     fetchRes(data, resolve) {
-      this.$api("getDeviceByPuid", { puid: data.$ }).then((rv) => {
-        console.log(rv);
+      this.$webcu2plugin.getDeviceByPuid({ puid: data.$ }).then((rv)=>{
         if (rv.Res) {
           let camera = [];
           for (let r of rv.Res) {
@@ -109,12 +101,11 @@ export default {
               camera.push(r);
             }
           }
-
           resolve(camera);
         } else {
           resolve([]);
         }
-      });
+      })
     },
     filterTreeNode(value, data, node) {
       if (!value) return true;
@@ -141,74 +132,8 @@ export default {
       let self = this;
       if (node.data.Type != "IV" && node.data.Usable != "1") return;
       self.$bus.$emit("startPlayVideo", node);
-
-      // let puid = node.data.puid;
-      // let idx = node.data.Idx;
-      // let stream = "0";
-      // let { playing, playInfo } = self.checkPlayState({
-      //   camera: node.data,
-      // });
-      // // 判断摄像头是否在播放
-      // if (playing) {
-      //   self.$store.commit("playvideo/setCurrentWindow", {
-      //     index: playInfo.playWindow,
-      //   });
-      //   return;
-      // }
-      // // if (self.getCurrentWindowState.playing) {
-      // //   let playID = self.getCurrentWindowState.playInfo.puid;
-      // //   self.$bus.$emit("stopVideo",{playID})
-      // // }
-      // this.$api("getPlayVideoId", { puid, idx, stream }).then((rv) => {
-      //   if (rv.msg == "OK") {
-      //     let playID = rv.playID;
-      //     let type = rv.type;
-      //     let playWindow = self.currentWindow;
-      //     self.$bus.$emit("playVideo", {
-      //       playID,
-      //       type,
-      //       camera: node.data,
-      //       device: node.parent.data,
-      //     });
-      //     // this.playVideo(playID, playWindow);
-      //   } else {
-      //     self.$message.warning(rv);
-      //   }
-      // });
     },
-    // playVideo(playID, playWindow) {
-    //   let self = this;
-    //   let flvPlayer = flv.createPlayer(
-    //     {
-    //       type: "flv",
-    //       url: url,
-    //       isLive: true,
-    //       hasAudio: false,
-    //     },
-    //     {
-    //       enableWorker: false,
-    //       autoCleanupSourceBuffer: true, //清理缓冲区
-    //       enableStashBuffer: false,
-    //       stashInitialSize: 128, // 减少首桢显示等待时长
-    //       statisticsInfoReportInterval: 600,
-    //     }
-    //   );
-    //   // let ele = self.$store.state.playvideo.currentEle;
-    //   let ele = self.getCurrentEle();
-    //   console.log(ele);
-    //   flvPlayer.attachMediaElement(ele);
-    //   flvPlayer.load();
-    //   console.log(flvPlayer);
-    //   setTimeout(() => {
-    //     flvPlayer.play();
-    //     let play = {
-    //       playWindow,
-    //       playID,
-    //     };
-    //     self.$store.commit("playvideo/addPlayInfo", { play });
-    //   }, 200);
-    // },
-
+ 
     // 判断设备子资源图标
     checkSourceType(node) {
       let self = this;

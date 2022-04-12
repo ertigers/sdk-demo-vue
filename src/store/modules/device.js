@@ -1,5 +1,3 @@
-import { api } from "@/api";
-
 const state = {
   deviceList: [],  // 设备列表
   deviceResList: [], // 设备列表 + 子资源
@@ -43,27 +41,25 @@ const actions = {
     dispatch("loopFetchDevice", parmas);
   },
   async loopFetchDevice({ commit, dispatch }, params) {
-    api("getDeviceList", params)
-      .then(async (rv) => {
-        if (!rv.errcode) {
-          rv.forEach((dv) => {
-            dv.treeType = "device";
-            return dv;
-          });
-          commit("loopSetDevice", {
-            deviceList: rv,
-          });
-          if (rv.length == params.count) {
-            params.offset += params.count;
-            await dispatch("loopFetchDevice", params);
-          }
-        } else {
-          console.log(rv);
+    this._vm.$webcu2plugin.getDeviceList(params).then(async (rv) => {
+      if (!rv.errcode) {
+        rv.forEach((dv) => {
+          dv.treeType = "device";
+          return dv;
+        });
+        commit("loopSetDevice", {
+          deviceList: rv,
+        });
+        if (rv.length == params.count) {
+          params.offset += params.count;
+          await dispatch("loopFetchDevice", params);
         }
-      })
-      .catch((ex) => {
-        console.log(ex);
-      });
+      } else {
+        console.log(rv);
+      }
+    }).catch((ex) => {
+      console.log(ex);
+    });
   },
 };
 

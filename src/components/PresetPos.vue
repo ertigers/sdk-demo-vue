@@ -103,7 +103,7 @@ export default {
         };
         self.yzwList.push(obj);
       }
-      self.$api("getPresetPosList", params).then((rv) => {
+      this.$webcu2plugin.getPresetPosList(params).then((rv)=>{
         console.log(rv);
         if (rv.code == 0) {
           if (rv.rows) {
@@ -145,7 +145,7 @@ export default {
         presetPos: presetPos,
       };
       if (!self.getCurrentWindowState.playing) return;
-      self.$api("setPresetPos", params).then((rv) => {
+      this.$webcu2plugin.setPresetPos(params).then((rv)=>{
         console.log(rv);
       });
     },
@@ -159,18 +159,17 @@ export default {
       };
       console.log(params);
       if (!self.getCurrentWindowState.playing) return;
-      self.$api("moveToPresetPos", params).then((rv) => {
+      this.$webcu2plugin.moveToPresetPos(params).then((rv)=>{
         console.log(rv);
       });
     },
     // 前往原始预置位
     gotoOriginalPresetPos() {
-      let self = this;
       let params = {
         puid: "",
         idx: "",
       };
-      self.$api("gotoOriginalPresetPos", params).then((rv) => {
+      this.$webcu2plugin.gotoOriginalPresetPos(params).then((rv)=>{
         console.log(rv);
       });
     },

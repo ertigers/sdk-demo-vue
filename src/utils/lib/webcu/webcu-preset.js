@@ -1,5 +1,6 @@
 import { QxRequest } from '../request.js'
-import { server_url } from '../config'
+import { cf } from "../config.js";
+import { qxGlobalData } from "./webcu_global_data.js"
 
 const preset = {
   /**
@@ -15,14 +16,14 @@ const preset = {
     }
     let idx = query.idx || '0'
     let puid = query.puid || ''
-    let token = query.token || ''
+    let token = qxGlobalData.token || ''
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
     <M Type="ComReq">
       <C Type="G" Prio="1" EPID="system" Lang="zh_CN">
         <Res Type="PTZ" Idx="${idx}" OptID="F_PTZ_PresetPositionSets" Stream="0"><Param></Param></Res>
       </C>
     </M>`
-    let url = `${server_url}RawRequest?dstType=201&dstID=${puid}&token=${token}`
+    let url = `${cf.server_url}RawRequest?dstType=201&dstID=${puid}&token=${token}`
     let params= { xml }
     let data = await QxRequest('post', url , params);
     try {
@@ -36,17 +37,17 @@ const preset = {
 
   // 设置预置位
   setPresetPos: (params) => {
-    return QxRequest('post',`${server_url}PTZ/C_PTZ_SetPresetPos`, params);
+    return QxRequest('post',`${cf.server_url}PTZ/C_PTZ_SetPresetPos`, params);
   },
 
   // 前往预置位
   moveToPresetPos: (params) => {
-    return QxRequest('post',`${server_url}PTZ/C_PTZ_MoveToPresetPos`, params);
+    return QxRequest('post',`${cf.server_url}PTZ/C_PTZ_MoveToPresetPos`, params);
   },
 
   // 前往原始预置位
   gotoOriginalPresetPos: (params) => {
-    return QxRequest('post',`${server_url}PTZ/C_PTZ_GotoOriginalPresetPos`, params);
+    return QxRequest('post',`${cf.server_url}PTZ/C_PTZ_GotoOriginalPresetPos`, params);
   },
  
 }

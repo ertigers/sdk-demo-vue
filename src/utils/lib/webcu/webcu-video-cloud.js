@@ -1,5 +1,5 @@
 import { QxRequest } from '../request.js'
-import { plugin_url } from '../config'
+import { cf } from "../config.js";
 
 const videoCloud = {
   /**
@@ -9,24 +9,41 @@ const videoCloud = {
   */
   // 开始云抓拍
   startCloudSnapshot: (params) => {
-    return QxRequest('post',`${plugin_url}CSS/C_CSS_StartManualSnapshot`, params);
+    return QxRequest('post',`${cf.server_url}CSS/C_CSS_StartManualSnapshot`, params);
   },
 
-  // 开始云存储(云连拍，云录像)
-  startCloudStorage: (params) => {
-    return QxRequest('post',`${plugin_url}CSS/C_CSS_StartManualStorage`, params);
+  // 开始云存储(云连拍)
+  startCloudImage:(params) =>{
+    params.type = 1
+    params.fileLength = params.fileLength || 5
+    params.reserveDay = params.reserveDay || 30
+    params.duration = params.duration || 5
+    return QxRequest('post',`${cf.server_url}CSS/C_CSS_StartManualStorage`, params);
   },
 
-  // 停止云存储（云录像，云连拍）
+  // 开始云存储(云录像)
+  startCloudVideo: (params) => {
+    params.type = 0
+    params.fileLength = params.fileLength || 15
+    params.reserveDay = params.reserveDay || 30
+    params.duration = params.duration || 5
+    return QxRequest('post',`${cf.server_url}CSS/C_CSS_StartManualStorage`, params);
+  },
+  
+  // 开始云存储
+  // startCloudStorage: (params) => {
+  //   return QxRequest('post',`${cf.server_url}CSS/C_CSS_StartManualStorage`, params);
+  // },
+
+  // 停止云存储（云录像）
   stopCloudStorage: (params) => {
-    return QxRequest('post',`${plugin_url}CSS/C_CSS_StopManualStorage`, params);
+    return QxRequest('post',`${cf.server_url}CSS/C_CSS_StopManualStorage`, params);
   },
 
   // 查询云文件（云录像，云抓拍）
   getCloudFile: (params) => {
-    return QxRequest('get',`${plugin_url}CSS/C_CSS_QueryStorageFiles`, params);
+    return QxRequest('get', `${cf.server_url}CSS/C_CSS_QueryStorageFiles`, params);
   },
-
 
 }
 

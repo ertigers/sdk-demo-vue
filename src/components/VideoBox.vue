@@ -2,17 +2,14 @@
   <el-col
     :span="12"
     class="videobox"
-    :class="{ active: currentWindow == windowIndex, playing: playID }"
+    :class="{ active: currentWindow == windowIndex, playing: playInfo }"
     style="height:50%"
   >
-    <div @click="changeCurrentWindow">
-      <video
-        :ref="'videobox' + windowIndex"
-        :id="'videobox' + windowIndex"
-      ></video>
+    <div @click="changeCurrentWindow" :ref="'videoDom'+ windowIndex">
+      <!-- sdk会在这里创建video标签或者canvas标签 -->
       <i class="close el-icon-close" @click.stop="stopVideo"></i>
-      <div class="tools" v-if="playID">
-        <span :title="camera.Name">{{ camera.Name + statusText }}</span>
+      <div class="tools" v-if="playInfo">
+        <span :title="playInfo.name">{{ playInfo.name + statusText }}</span>
         <div class="controls" v-if="playState == 2">
           <!-- <div title="3d" class="d3d"></div> -->
           <div
@@ -88,12 +85,10 @@
 </template>
 
 <script>
-import flv from "flv.js";
 import { mapGetters } from "vuex";
 export default {
-  components: {},
   props: {
-    // 窗口索引
+    // 窗口索引1-4
     windowIndex: {
       type: [Number, String],
     },
@@ -105,10 +100,6 @@ export default {
   },
   data() {
     return {
-      // playID: "",
-      flvPlayer: null,
-      // device: null,
-      // camera: null,
       playState: 2,
       statusText: "",
       ylp: {
@@ -139,116 +130,64 @@ export default {
     };
   },
   computed: {
-    deviceResList() {
-      return this.$store.state.device.deviceResList;
+    playInfo() {
+      let value = null;
+      if(this.windowIndex === this.currentWindow) {
+        let { playInfo } = this.checkPlayState({
+          windowIndex: this.windowIndex,
+        });       
+        value = playInfo;
+        console.log(playInfo);
+      }
+      return value;
     },
+
     ...mapGetters({
       checkPlayState: "playvideo/checkPlayState",
       getCurrentWindowState: "playvideo/getCurrentWindowState",
     }),
-    playID() {
-      // console.log(this.getCurrentWindowState)
-      let playID = null;
-      let { playing, playInfo } = this.checkPlayState({
-        windowIndex: this.windowIndex,
-      });
-      if (playing) {
-        playID = playInfo.playID;
-      }
-      return playID;
-    },
-    camera() {
-      let camera = null;
-      let { playing, playInfo } = this.checkPlayState({
-        windowIndex: this.windowIndex,
-      });
-      if (playing) {
-        camera = playInfo.camera;
-      }
-      return camera;
-    },
-    device() {
-      let device = null;
-      let { playing, playInfo } = this.checkPlayState({
-        windowIndex: this.windowIndex,
-      });
-      if (playing) {
-        device = playInfo.device;
-      }
-      return device;
-    },
   },
   watch: {},
   beforeCreate() {},
   created() {},
   beforeMount() {},
   mounted() {
-    let self = this;
-
-    // 存储dom窗口
-    let windowDom = self.$refs["videobox" + self.windowIndex];
-    self.$store.commit("playvideo/setWindowDomMap", {
-      windowIndex: self.windowIndex,
-      windowDom: windowDom,
-    });
-
-    // self.$bus.$on("playVideo", (data) => {
-    //   let { type, playID, camera, device } = data;
-    //   // 判断当前摄像头是否在播放
-    //   // if (self.playID && self.device && self.camera) {
-    //   //   if (self.camera.puid == camera.puid && self.camera.Idx == camera.Idx) {
-    //   //     // 当前摄像头正在播放
-    //   //     self.$emit("currentWindowChange",self.windowIndex);
-    //   //   }
-    //   // }
-    //   if (self.currentWindow == self.windowIndex) {
-    //     self.camera = camera;
-    //     self.device = device;
-    //     let url = "http://172.22.72.1:9585/stream2.flv?playID=" + playID;
-    //     if (self.playID) {
-    //       self.stopVideo();
-    //     }
-    //     self.playVideo({ url, playID });
-    //   }
-    // });
-
     // 摄像头双击接收播放视频通知
-    self.$bus.$on("startPlayVideo", async (node) => {
+    this.$bus.$on("startPlayVideo", async (node) => {
       let puid = node.data.puid;
       let idx = node.data.Idx;
-      let stream = "0";
       let camera = node.data;
       let device = node.parent.data;
-      if (self.windowIndex != self.currentWindow) return;
-      let { playing, playInfo } = self.checkPlayState({
+      if (this.windowIndex != this.currentWindow) return;
+      let { playing, playInfo } = this.checkPlayState({
         camera: node.data,
       });
       // 判断摄像头是否在播放
       if (playing) {
-        self.$store.commit("playvideo/setCurrentWindow", {
+        this.$store.commit("playvideo/setCurrentWindow", {
           index: playInfo.playWindow,
         });
         return;
       }
       // 判断当前选中的窗口是否在播放
-      if (self.getCurrentWindowState.playing) {
-        await self.stopVideo();
+      if (this.getCurrentWindowState.playing) {
+        await this.stopVideo();
       }
-      self.startPlayVideo({ puid, idx, stream, camera, device });
+      this.startPlayVideo({ puid, idx, camera, device });
     });
 
     // 播放事件的通知
-    self.$bus.$on("playEvent", (data) => {
+    this.$bus.$on("playEvent", (data) => {
       let { status, playID, statusText } = data;
-      if (self.playID && self.playID == playID) {
-        self.playState = status;
+      if (this.playID && this.playID == playID) {
+        this.playState = status;
         console.log(data);
-        self.statusText = statusText;
+        this.statusText = statusText;
       }
     });
-    self.$bus.$on("stopVideo", ({ playID }) => {
-      if (playID == self.playID) {
-        self.stopVideo(playID);
+    this.$bus.$on("stopVideo", ({ playID }) => {
+      if (playID == this.playID) {
+        this.stopVideo(playID);
       }
     });
   },
@@ -258,44 +197,29 @@ export default {
     }
   },
   methods: {
-    async startPlayVideo({ puid, idx, stream, camera, device }) {
-      let token = this.$store.state.token;
-      this.statusText = "正在连接";
-      let url = `/icvs2/stream.flv?puid=${puid}&idx=${idx}&stream=${stream}&token=${token}`;   // 服务端的host
-      let self = this;
-      console.log(url);
-      self.flvPlayer = flv.createPlayer(
-        {
-          type: "flv",
-          url: url,
-          isLive: true,
-          hasAudio: false,
-        },
-        {
-          enableWorker: false,
-          autoCleanupSourceBuffer: true, //清理缓冲区
-          enableStashBuffer: false,
-          stashInitialSize: 128, // 减少首桢显示等待时长
-          statisticsInfoReportInterval: 600,
+    // 播放视频
+    async startPlayVideo({ puid, idx, camera,device }) {
+      let videoWrapperDom = this.$refs['videoDom' + this.currentWindow]
+      console.log(videoWrapperDom);
+      let params = {
+        puid,
+        idx,
+        videoWrapperDom,
+        videoType:'video/avc'  // 如果明确平台上不使用H265就传入此参数，可提升视频连接效率
+      }
+      this.$webcu2plugin.play(params).then((rv)=>{
+        if(rv.msg === 'OK') {
+          let play = {
+            playWindowIndex: this.windowIndex,
+            puid,
+            idx,
+            videoWrapperDom,
+            name:camera.Name,
+            device
+          };
+          this.$store.commit("playvideo/addPlayInfo", { play });
         }
-      );
-      let ele = self.$refs["videobox" + self.windowIndex];
-      console.log(ele);
-      self.flvPlayer.attachMediaElement(ele);
-      self.flvPlayer.load();
-      setTimeout(() => {
-        self.flvPlayer.play();
-        let play = {
-          playWindow: self.windowIndex,
-          puid: camera.puid,
-          idx: camera.Idx,
-          name: camera.Name,
-          camera: camera,
-          device: device,
-        };
-        console.log(play);
-        self.$store.commit("playvideo/addPlayInfo", { play });
-      }, 200);
+      })
     },
     // 获取播放ID
     async getPlayId({ puid, idx, stream }) {
@@ -314,45 +238,6 @@ export default {
           return { playID };
         }
       );
-    },
-    // 播放视频
-    async playVideo({ url, playID, camera, device }) {
-      let self = this;
-      console.log(url);
-      self.flvPlayer = flv.createPlayer(
-        {
-          type: "flv",
-          url: url,
-          isLive: true,
-          hasAudio: false,
-        },
-        {
-          enableWorker: false,
-          autoCleanupSourceBuffer: true, //清理缓冲区
-          enableStashBuffer: false,
-          stashInitialSize: 128, // 减少首桢显示等待时长
-          statisticsInfoReportInterval: 600,
-        }
-      );
-      let ele = self.$refs["videobox" + self.windowIndex];
-      console.log(ele);
-      self.flvPlayer.attachMediaElement(ele);
-      self.flvPlayer.load();
-      setTimeout(() => {
-        self.flvPlayer.play();
-        // self.playID = playID;
-        let play = {
-          playWindow: self.windowIndex,
-          playID,
-          puid: camera.puid,
-          idx: camera.Idx,
-          name: camera.Name,
-          camera: camera,
-          device: device,
-        };
-        console.log(play);
-        self.$store.commit("playvideo/addPlayInfo", { play });
-      }, 200);
     },
     // 关闭视频
     async stopVideo(playID) {
@@ -382,10 +267,7 @@ export default {
     // 清空当前播放信息
     clearData() {
       let self = this;
-      // self.playID = null;
       self.flvPlayer = null;
-      // self.device = null;
-      // self.camera = null;
     },
     changeCurrentWindow() {
       this.$emit("changeCurrentWindow", this.windowIndex);
@@ -752,10 +634,8 @@ export default {
   &.active {
     border: solid 1px #fff;
   }
-
   video {
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
   }
 
   > div {

@@ -49,6 +49,7 @@ export default {
         password: "",
         epid: "system",
         fixaddr: 0,
+        serverHost:'172.22.93.1:9581'
       },
       dialogVisible: false,
     };
@@ -68,7 +69,8 @@ export default {
     // 自动登录
     autoLogin() {
       let params = JSON.parse(JSON.stringify(this.form))
-      this.$api("login", params, this.eventCallback).then((rv) => {
+      console.log(params)
+      this.$webcu2plugin.login(params,this.eventCallback).then((rv)=>{
         console.log(rv);
         if (rv.msg == "OK") {
           let token = rv.token;
@@ -78,7 +80,7 @@ export default {
         } else {
           this.$message.warning(rv.msg);
         }
-      });
+      })
     },
     // ws回调函数
     eventCallback(params) {

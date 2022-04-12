@@ -3,10 +3,14 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui';
+
+import webcu2plugin from "./utils/lib/webcu2plugin.js"
+
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/style/index.scss'
 
 Vue.use(ElementUI)
+Vue.prototype.$webcu2plugin = webcu2plugin
 
 Vue.config.productionTip = false
 

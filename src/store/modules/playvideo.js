@@ -1,5 +1,3 @@
-import { api } from "../../api";
-
 const state = {
     currentWindow: 1,
     playList: [],
@@ -25,10 +23,8 @@ const getters = {
             playInfo: null,
         }
         for (let play of playList) {
-            if (
-                (windowIndex && windowIndex == play.playWindow) ||
-                (camera && camera.puid == play.puid && camera.Idx == play.idx)
-            ) {
+            if ((windowIndex && windowIndex == play.playWindowIndex) 
+            || (camera && camera.puid == play.puid && camera.Idx == play.idx)) {
                 result.playing = true;
                 result.playInfo = play;
                 break;
@@ -36,34 +32,26 @@ const getters = {
         }
         return result
     },
-    // 获取当前选中窗口的状态
+    // 获取当前选中窗口的播放信息
     getCurrentWindowState: (state, getters) => {
         return getters.checkPlayState({
             windowIndex: state.currentWindow
         });
     },
-    // 获取当前选中窗口的dom
-    getCurrentEle: state => {
-        let windowIndex = state.currentWindow;
-        let currentDom = state.windowDomMap.get(windowIndex);
-        return currentDom;
-    }
 }
 
 const mutations = {
-    // 当前选中的窗口索引
+    // 设置当前选中的窗口索引
     setCurrentWindow(state, payload) {
-        let {
-            index
-        } = payload;
+        let { index } = payload;
         state.currentWindow = index;
     },
+    // 播放成功，添加播放信息
     addPlayInfo(state, payload) {
-        let {
-            play
-        } = payload;
+        let { play } = payload;
         state.playList.push(play);
     },
+    // 停止播放，删除播放信息
     delPlayInfo(state, payload) {
         let {
             play
@@ -75,14 +63,6 @@ const mutations = {
                 break
             }
         }
-    },
-    setWindowDomMap(state, payload) {
-        if (!state.windowDomMap) state.windowDomMap = new Map();
-        let {
-            windowIndex,
-            windowDom
-        } = payload;
-        state.windowDomMap.set(windowIndex, windowDom)
     },
 }
 

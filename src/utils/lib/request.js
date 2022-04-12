@@ -1,16 +1,26 @@
-import { xml2json } from './x2js.js'
+import { xml2json } from './utils/x2js.js'
+import { qxGlobalData } from "./webcu/webcu_global_data.js"
 
-const QxRequest = (method, url, params)=> {
+const QxRequest = (method, url, params) => {
+  if(qxGlobalData.token) {  // 添加token
+    params.token = qxGlobalData.token
+  }
   return new Promise((resolve) => {
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {   // 成功
-          if(xhr.responseText.startsWith('<')) {
+          if (xhr.responseText.startsWith('<')) {
             let responseText = xml2json(xhr.responseText)
             resolve(responseText);
-          }else {
-            resolve(JSON.parse(xhr.responseText));
+          } else {
+            //
+            try {
+              resolve(JSON.parse(xhr.responseText));
+            } catch (error) {
+              resolve(xhr.responseText);
+            }
+
           }
         } else {
           let query = {
@@ -36,7 +46,7 @@ const QxRequest = (method, url, params)=> {
       }
       url = params ? url + "?" + params : url;
       xhr.open(method, url, true);
-      xhr.timeout = 8000; // 超时时间，单位是毫秒
+      xhr.timeout = 30000; // 超时时间，单位是毫秒
       xhr.send();
     }
 
@@ -45,7 +55,7 @@ const QxRequest = (method, url, params)=> {
       xhr.open(method, url, true);
       xhr.setRequestHeader('content-type', 'application/json; charset=UTF-8')
       xhr.setRequestHeader("Accept", "*/*");
-      xhr.timeout = 8000; // 超时时间，单位是毫秒
+      xhr.timeout = 30000; // 超时时间，单位是毫秒
       xhr.send(JSON.stringify(params));
     }
   });
